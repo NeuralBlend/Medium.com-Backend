@@ -17,7 +17,13 @@ import { Post } from "./Post";
 import { PostCountArgs } from "./PostCountArgs";
 import { PostFindManyArgs } from "./PostFindManyArgs";
 import { PostFindUniqueArgs } from "./PostFindUniqueArgs";
+import { CreatePostArgs } from "./CreatePostArgs";
+import { UpdatePostArgs } from "./UpdatePostArgs";
 import { DeletePostArgs } from "./DeletePostArgs";
+import { CommentFindManyArgs } from "../../comment/base/CommentFindManyArgs";
+import { Comment } from "../../comment/base/Comment";
+import { User } from "../../user/base/User";
+import { Category } from "../../category/base/Category";
 import { PostService } from "../post.service";
 @graphql.Resolver(() => Post)
 export class PostResolverBase {
@@ -47,6 +53,59 @@ export class PostResolverBase {
   }
 
   @graphql.Mutation(() => Post)
+  async createPost(@graphql.Args() args: CreatePostArgs): Promise<Post> {
+    return await this.service.createPost({
+      ...args,
+      data: {
+        ...args.data,
+
+        user: args.data.user
+          ? {
+              connect: args.data.user,
+            }
+          : undefined,
+
+        category: args.data.category
+          ? {
+              connect: args.data.category,
+            }
+          : undefined,
+      },
+    });
+  }
+
+  @graphql.Mutation(() => Post)
+  async updatePost(@graphql.Args() args: UpdatePostArgs): Promise<Post | null> {
+    try {
+      return await this.service.updatePost({
+        ...args,
+        data: {
+          ...args.data,
+
+          user: args.data.user
+            ? {
+                connect: args.data.user,
+              }
+            : undefined,
+
+          category: args.data.category
+            ? {
+                connect: args.data.category,
+              }
+            : undefined,
+        },
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Post)
   async deletePost(@graphql.Args() args: DeletePostArgs): Promise<Post | null> {
     try {
       return await this.service.deletePost(args);
@@ -58,5 +117,45 @@ export class PostResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Comment], { name: "comments" })
+  async findComments(
+    @graphql.Parent() parent: Post,
+    @graphql.Args() args: CommentFindManyArgs
+  ): Promise<Comment[]> {
+    const results = await this.service.findComments(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @graphql.ResolveField(() => User, {
+    nullable: true,
+    name: "user",
+  })
+  async getUser(@graphql.Parent() parent: Post): Promise<User | null> {
+    const result = await this.service.getUser(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
+  }
+
+  @graphql.ResolveField(() => Category, {
+    nullable: true,
+    name: "category",
+  })
+  async getCategory(@graphql.Parent() parent: Post): Promise<Category | null> {
+    const result = await this.service.getCategory(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

@@ -10,7 +10,14 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, Post as PrismaPost } from "@prisma/client";
+
+import {
+  Prisma,
+  Post as PrismaPost,
+  Comment as PrismaComment,
+  User as PrismaUser,
+  Category as PrismaCategory,
+} from "@prisma/client";
 
 export class PostServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -33,5 +40,32 @@ export class PostServiceBase {
   }
   async deletePost(args: Prisma.PostDeleteArgs): Promise<PrismaPost> {
     return this.prisma.post.delete(args);
+  }
+
+  async findComments(
+    parentId: string,
+    args: Prisma.CommentFindManyArgs
+  ): Promise<PrismaComment[]> {
+    return this.prisma.post
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .comments(args);
+  }
+
+  async getUser(parentId: string): Promise<PrismaUser | null> {
+    return this.prisma.post
+      .findUnique({
+        where: { id: parentId },
+      })
+      .user();
+  }
+
+  async getCategory(parentId: string): Promise<PrismaCategory | null> {
+    return this.prisma.post
+      .findUnique({
+        where: { id: parentId },
+      })
+      .category();
   }
 }

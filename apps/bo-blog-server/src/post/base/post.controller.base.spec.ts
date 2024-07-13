@@ -18,26 +18,38 @@ import { PostService } from "../post.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
-  createdAt: new Date(),
   id: "exampleId",
+  createdAt: new Date(),
   updatedAt: new Date(),
+  title: "exampleTitle",
+  content: "exampleContent",
+  publishedDate: new Date(),
 };
 const CREATE_RESULT = {
-  createdAt: new Date(),
   id: "exampleId",
+  createdAt: new Date(),
   updatedAt: new Date(),
+  title: "exampleTitle",
+  content: "exampleContent",
+  publishedDate: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
-    createdAt: new Date(),
     id: "exampleId",
+    createdAt: new Date(),
     updatedAt: new Date(),
+    title: "exampleTitle",
+    content: "exampleContent",
+    publishedDate: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
-  createdAt: new Date(),
   id: "exampleId",
+  createdAt: new Date(),
   updatedAt: new Date(),
+  title: "exampleTitle",
+  content: "exampleContent",
+  publishedDate: new Date(),
 };
 
 const service = {
@@ -124,6 +136,7 @@ describe("Post", () => {
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
+        publishedDate: CREATE_RESULT.publishedDate.toISOString(),
       });
   });
 
@@ -136,6 +149,7 @@ describe("Post", () => {
           ...FIND_MANY_RESULT[0],
           createdAt: FIND_MANY_RESULT[0].createdAt.toISOString(),
           updatedAt: FIND_MANY_RESULT[0].updatedAt.toISOString(),
+          publishedDate: FIND_MANY_RESULT[0].publishedDate.toISOString(),
         },
       ]);
   });
@@ -159,6 +173,7 @@ describe("Post", () => {
         ...FIND_ONE_RESULT,
         createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
         updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
+        publishedDate: FIND_ONE_RESULT.publishedDate.toISOString(),
       });
   });
 
@@ -172,6 +187,7 @@ describe("Post", () => {
         ...CREATE_RESULT,
         createdAt: CREATE_RESULT.createdAt.toISOString(),
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
+        publishedDate: CREATE_RESULT.publishedDate.toISOString(),
       })
       .then(function () {
         agent

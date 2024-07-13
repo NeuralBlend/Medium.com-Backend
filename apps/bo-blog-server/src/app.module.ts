@@ -1,9 +1,10 @@
 import { Module } from "@nestjs/common";
-import { PostModule } from "./post/post.module";
 import { CommentModule } from "./comment/comment.module";
 import { BlogModule } from "./blog/blog.module";
+import { PostModule } from "./post/post.module";
 import { UserModule } from "./user/user.module";
 import { ApiModule } from "./api/api.module";
+import { CategoryModule } from "./category/category.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -16,11 +17,12 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 @Module({
   controllers: [],
   imports: [
-    PostModule,
     CommentModule,
     BlogModule,
+    PostModule,
     UserModule,
     ApiModule,
+    CategoryModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

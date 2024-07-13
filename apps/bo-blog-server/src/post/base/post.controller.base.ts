@@ -22,6 +22,9 @@ import { Post } from "./Post";
 import { PostFindManyArgs } from "./PostFindManyArgs";
 import { PostWhereUniqueInput } from "./PostWhereUniqueInput";
 import { PostUpdateInput } from "./PostUpdateInput";
+import { CommentFindManyArgs } from "../../comment/base/CommentFindManyArgs";
+import { Comment } from "../../comment/base/Comment";
+import { CommentWhereUniqueInput } from "../../comment/base/CommentWhereUniqueInput";
 
 export class PostControllerBase {
   constructor(protected readonly service: PostService) {}
@@ -29,11 +32,40 @@ export class PostControllerBase {
   @swagger.ApiCreatedResponse({ type: Post })
   async createPost(@common.Body() data: PostCreateInput): Promise<Post> {
     return await this.service.createPost({
-      data: data,
+      data: {
+        ...data,
+
+        user: data.user
+          ? {
+              connect: data.user,
+            }
+          : undefined,
+
+        category: data.category
+          ? {
+              connect: data.category,
+            }
+          : undefined,
+      },
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
+        title: true,
+        content: true,
+        publishedDate: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        category: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -46,9 +78,24 @@ export class PostControllerBase {
     return this.service.posts({
       ...args,
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
+        title: true,
+        content: true,
+        publishedDate: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        category: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -62,9 +109,24 @@ export class PostControllerBase {
     const result = await this.service.post({
       where: params,
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
+        title: true,
+        content: true,
+        publishedDate: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        category: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -85,11 +147,40 @@ export class PostControllerBase {
     try {
       return await this.service.updatePost({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          user: data.user
+            ? {
+                connect: data.user,
+              }
+            : undefined,
+
+          category: data.category
+            ? {
+                connect: data.category,
+              }
+            : undefined,
+        },
         select: {
-          createdAt: true,
           id: true,
+          createdAt: true,
           updatedAt: true,
+          title: true,
+          content: true,
+          publishedDate: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
+
+          category: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -112,9 +203,24 @@ export class PostControllerBase {
       return await this.service.deletePost({
         where: params,
         select: {
-          createdAt: true,
           id: true,
+          createdAt: true,
           updatedAt: true,
+          title: true,
+          content: true,
+          publishedDate: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
+
+          category: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -125,5 +231,92 @@ export class PostControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.Get("/:id/comments")
+  @ApiNestedQuery(CommentFindManyArgs)
+  async findComments(
+    @common.Req() request: Request,
+    @common.Param() params: PostWhereUniqueInput
+  ): Promise<Comment[]> {
+    const query = plainToClass(CommentFindManyArgs, request.query);
+    const results = await this.service.findComments(params.id, {
+      ...query,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        content: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        post: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/comments")
+  async connectComments(
+    @common.Param() params: PostWhereUniqueInput,
+    @common.Body() body: CommentWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      comments: {
+        connect: body,
+      },
+    };
+    await this.service.updatePost({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/comments")
+  async updateComments(
+    @common.Param() params: PostWhereUniqueInput,
+    @common.Body() body: CommentWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      comments: {
+        set: body,
+      },
+    };
+    await this.service.updatePost({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/comments")
+  async disconnectComments(
+    @common.Param() params: PostWhereUniqueInput,
+    @common.Body() body: CommentWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      comments: {
+        disconnect: body,
+      },
+    };
+    await this.service.updatePost({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

@@ -5,10 +5,6 @@ import { theme } from "./theme/theme";
 import Login from "./Login";
 import "./App.scss";
 import Dashboard from "./pages/Dashboard";
-import { PostList } from "./post/PostList";
-import { PostCreate } from "./post/PostCreate";
-import { PostEdit } from "./post/PostEdit";
-import { PostShow } from "./post/PostShow";
 import { CommentList } from "./comment/CommentList";
 import { CommentCreate } from "./comment/CommentCreate";
 import { CommentEdit } from "./comment/CommentEdit";
@@ -17,6 +13,10 @@ import { BlogList } from "./blog/BlogList";
 import { BlogCreate } from "./blog/BlogCreate";
 import { BlogEdit } from "./blog/BlogEdit";
 import { BlogShow } from "./blog/BlogShow";
+import { PostList } from "./post/PostList";
+import { PostCreate } from "./post/PostCreate";
+import { PostEdit } from "./post/PostEdit";
+import { PostShow } from "./post/PostShow";
 import { UserList } from "./user/UserList";
 import { UserCreate } from "./user/UserCreate";
 import { UserEdit } from "./user/UserEdit";
@@ -25,6 +25,10 @@ import { ApiList } from "./api/ApiList";
 import { ApiCreate } from "./api/ApiCreate";
 import { ApiEdit } from "./api/ApiEdit";
 import { ApiShow } from "./api/ApiShow";
+import { CategoryList } from "./category/CategoryList";
+import { CategoryCreate } from "./category/CategoryCreate";
+import { CategoryEdit } from "./category/CategoryEdit";
+import { CategoryShow } from "./category/CategoryShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -52,13 +56,6 @@ const App = (): React.ReactElement => {
         loginPage={Login}
       >
         <Resource
-          name="Post"
-          list={PostList}
-          edit={PostEdit}
-          create={PostCreate}
-          show={PostShow}
-        />
-        <Resource
           name="Comment"
           list={CommentList}
           edit={CommentEdit}
@@ -73,6 +70,13 @@ const App = (): React.ReactElement => {
           show={BlogShow}
         />
         <Resource
+          name="Post"
+          list={PostList}
+          edit={PostEdit}
+          create={PostCreate}
+          show={PostShow}
+        />
+        <Resource
           name="User"
           list={UserList}
           edit={UserEdit}
@@ -85,6 +89,13 @@ const App = (): React.ReactElement => {
           edit={ApiEdit}
           create={ApiCreate}
           show={ApiShow}
+        />
+        <Resource
+          name="Category"
+          list={CategoryList}
+          edit={CategoryEdit}
+          create={CategoryCreate}
+          show={CategoryShow}
         />
       </Admin>
     </div>

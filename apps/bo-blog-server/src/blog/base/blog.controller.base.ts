@@ -32,8 +32,8 @@ export class BlogControllerBase {
     return await this.service.createBlog({
       data: data,
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
       },
     });
@@ -47,8 +47,8 @@ export class BlogControllerBase {
     return this.service.blogs({
       ...args,
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
       },
     });
@@ -63,8 +63,8 @@ export class BlogControllerBase {
     const result = await this.service.blog({
       where: params,
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
       },
     });
@@ -88,8 +88,8 @@ export class BlogControllerBase {
         where: params,
         data: data,
         select: {
-          createdAt: true,
           id: true,
+          createdAt: true,
           updatedAt: true,
         },
       });
@@ -113,8 +113,8 @@ export class BlogControllerBase {
       return await this.service.deleteBlog({
         where: params,
         select: {
-          createdAt: true,
           id: true,
+          createdAt: true,
           updatedAt: true,
         },
       });

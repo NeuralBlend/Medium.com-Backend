@@ -1,12 +1,16 @@
-import { ApiCreateNestedManyWithoutUsersInput } from "./ApiCreateNestedManyWithoutUsersInput";
 import { InputJsonValue } from "../../types";
+import { ApiCreateNestedManyWithoutUsersInput } from "./ApiCreateNestedManyWithoutUsersInput";
+import { CommentCreateNestedManyWithoutUsersInput } from "./CommentCreateNestedManyWithoutUsersInput";
+import { PostCreateNestedManyWithoutUsersInput } from "./PostCreateNestedManyWithoutUsersInput";
 
 export type UserCreateInput = {
-  apis?: ApiCreateNestedManyWithoutUsersInput;
-  email?: string | null;
   firstName?: string | null;
   lastName?: string | null;
+  username: string;
+  email?: string | null;
   password: string;
   roles: InputJsonValue;
-  username: string;
+  apis?: ApiCreateNestedManyWithoutUsersInput;
+  comments?: CommentCreateNestedManyWithoutUsersInput;
+  posts?: PostCreateNestedManyWithoutUsersInput;
 };
