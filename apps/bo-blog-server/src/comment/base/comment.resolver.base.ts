@@ -17,7 +17,11 @@ import { Comment } from "./Comment";
 import { CommentCountArgs } from "./CommentCountArgs";
 import { CommentFindManyArgs } from "./CommentFindManyArgs";
 import { CommentFindUniqueArgs } from "./CommentFindUniqueArgs";
+import { CreateCommentArgs } from "./CreateCommentArgs";
+import { UpdateCommentArgs } from "./UpdateCommentArgs";
 import { DeleteCommentArgs } from "./DeleteCommentArgs";
+import { User } from "../../user/base/User";
+import { Post } from "../../post/base/Post";
 import { CommentService } from "../comment.service";
 @graphql.Resolver(() => Comment)
 export class CommentResolverBase {
@@ -51,6 +55,63 @@ export class CommentResolverBase {
   }
 
   @graphql.Mutation(() => Comment)
+  async createComment(
+    @graphql.Args() args: CreateCommentArgs
+  ): Promise<Comment> {
+    return await this.service.createComment({
+      ...args,
+      data: {
+        ...args.data,
+
+        user: args.data.user
+          ? {
+              connect: args.data.user,
+            }
+          : undefined,
+
+        post: args.data.post
+          ? {
+              connect: args.data.post,
+            }
+          : undefined,
+      },
+    });
+  }
+
+  @graphql.Mutation(() => Comment)
+  async updateComment(
+    @graphql.Args() args: UpdateCommentArgs
+  ): Promise<Comment | null> {
+    try {
+      return await this.service.updateComment({
+        ...args,
+        data: {
+          ...args.data,
+
+          user: args.data.user
+            ? {
+                connect: args.data.user,
+              }
+            : undefined,
+
+          post: args.data.post
+            ? {
+                connect: args.data.post,
+              }
+            : undefined,
+        },
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Comment)
   async deleteComment(
     @graphql.Args() args: DeleteCommentArgs
   ): Promise<Comment | null> {
@@ -64,5 +125,31 @@ export class CommentResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => User, {
+    nullable: true,
+    name: "user",
+  })
+  async getUser(@graphql.Parent() parent: Comment): Promise<User | null> {
+    const result = await this.service.getUser(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
+  }
+
+  @graphql.ResolveField(() => Post, {
+    nullable: true,
+    name: "post",
+  })
+  async getPost(@graphql.Parent() parent: Comment): Promise<Post | null> {
+    const result = await this.service.getPost(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

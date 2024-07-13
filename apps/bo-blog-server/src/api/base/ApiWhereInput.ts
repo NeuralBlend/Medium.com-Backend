@@ -11,16 +11,27 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { BooleanNullableFilter } from "../../util/BooleanNullableFilter";
+import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
 import { IsOptional, IsEnum, ValidateNested } from "class-validator";
+import { BooleanNullableFilter } from "../../util/BooleanNullableFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
-import { StringFilter } from "../../util/StringFilter";
 import { EnumApiMethod } from "./EnumApiMethod";
 import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class ApiWhereInput {
+  @ApiProperty({
+    required: false,
+    type: StringFilter,
+  })
+  @Type(() => StringFilter)
+  @IsOptional()
+  @Field(() => StringFilter, {
+    nullable: true,
+  })
+  id?: StringFilter;
+
   @ApiProperty({
     required: false,
     type: BooleanNullableFilter,
@@ -41,7 +52,7 @@ class ApiWhereInput {
   @Field(() => StringNullableFilter, {
     nullable: true,
   })
-  description?: StringNullableFilter;
+  name?: StringNullableFilter;
 
   @ApiProperty({
     required: false,
@@ -53,17 +64,6 @@ class ApiWhereInput {
     nullable: true,
   })
   endpoint?: StringNullableFilter;
-
-  @ApiProperty({
-    required: false,
-    type: StringFilter,
-  })
-  @Type(() => StringFilter)
-  @IsOptional()
-  @Field(() => StringFilter, {
-    nullable: true,
-  })
-  id?: StringFilter;
 
   @ApiProperty({
     required: false,
@@ -85,7 +85,7 @@ class ApiWhereInput {
   @Field(() => StringNullableFilter, {
     nullable: true,
   })
-  name?: StringNullableFilter;
+  description?: StringNullableFilter;
 
   @ApiProperty({
     required: false,

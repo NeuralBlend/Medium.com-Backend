@@ -40,14 +40,14 @@ export class ApiControllerBase {
           : undefined,
       },
       select: {
-        authRequired: true,
-        createdAt: true,
-        description: true,
-        endpoint: true,
         id: true,
-        method: true,
-        name: true,
+        createdAt: true,
         updatedAt: true,
+        authRequired: true,
+        name: true,
+        endpoint: true,
+        method: true,
+        description: true,
 
         user: {
           select: {
@@ -66,14 +66,14 @@ export class ApiControllerBase {
     return this.service.apis({
       ...args,
       select: {
-        authRequired: true,
-        createdAt: true,
-        description: true,
-        endpoint: true,
         id: true,
-        method: true,
-        name: true,
+        createdAt: true,
         updatedAt: true,
+        authRequired: true,
+        name: true,
+        endpoint: true,
+        method: true,
+        description: true,
 
         user: {
           select: {
@@ -91,14 +91,14 @@ export class ApiControllerBase {
     const result = await this.service.api({
       where: params,
       select: {
-        authRequired: true,
-        createdAt: true,
-        description: true,
-        endpoint: true,
         id: true,
-        method: true,
-        name: true,
+        createdAt: true,
         updatedAt: true,
+        authRequired: true,
+        name: true,
+        endpoint: true,
+        method: true,
+        description: true,
 
         user: {
           select: {
@@ -135,14 +135,14 @@ export class ApiControllerBase {
             : undefined,
         },
         select: {
-          authRequired: true,
-          createdAt: true,
-          description: true,
-          endpoint: true,
           id: true,
-          method: true,
-          name: true,
+          createdAt: true,
           updatedAt: true,
+          authRequired: true,
+          name: true,
+          endpoint: true,
+          method: true,
+          description: true,
 
           user: {
             select: {
@@ -171,14 +171,14 @@ export class ApiControllerBase {
       return await this.service.deleteApi({
         where: params,
         select: {
-          authRequired: true,
-          createdAt: true,
-          description: true,
-          endpoint: true,
           id: true,
-          method: true,
-          name: true,
+          createdAt: true,
           updatedAt: true,
+          authRequired: true,
+          name: true,
+          endpoint: true,
+          method: true,
+          description: true,
 
           user: {
             select: {

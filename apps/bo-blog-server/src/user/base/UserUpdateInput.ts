@@ -11,43 +11,22 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { ApiUpdateManyWithoutUsersInput } from "./ApiUpdateManyWithoutUsersInput";
 import {
-  ValidateNested,
-  IsOptional,
   IsString,
   MaxLength,
+  IsOptional,
+  ValidateNested,
 } from "class-validator";
-import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+import { ApiUpdateManyWithoutUsersInput } from "./ApiUpdateManyWithoutUsersInput";
+import { Type } from "class-transformer";
+import { CommentUpdateManyWithoutUsersInput } from "./CommentUpdateManyWithoutUsersInput";
+import { PostUpdateManyWithoutUsersInput } from "./PostUpdateManyWithoutUsersInput";
 
 @InputType()
 class UserUpdateInput {
-  @ApiProperty({
-    required: false,
-    type: () => ApiUpdateManyWithoutUsersInput,
-  })
-  @ValidateNested()
-  @Type(() => ApiUpdateManyWithoutUsersInput)
-  @IsOptional()
-  @Field(() => ApiUpdateManyWithoutUsersInput, {
-    nullable: true,
-  })
-  apis?: ApiUpdateManyWithoutUsersInput;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  email?: string | null;
-
   @ApiProperty({
     required: false,
     type: String,
@@ -81,6 +60,28 @@ class UserUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
+  username?: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  email?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
   password?: string;
 
   @ApiProperty({
@@ -95,14 +96,39 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: String,
+    type: () => ApiUpdateManyWithoutUsersInput,
   })
-  @IsString()
+  @ValidateNested()
+  @Type(() => ApiUpdateManyWithoutUsersInput)
   @IsOptional()
-  @Field(() => String, {
+  @Field(() => ApiUpdateManyWithoutUsersInput, {
     nullable: true,
   })
-  username?: string;
+  apis?: ApiUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => CommentUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => CommentUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => CommentUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  comments?: CommentUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => PostUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => PostUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => PostUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  posts?: PostUpdateManyWithoutUsersInput;
 }
 
 export { UserUpdateInput as UserUpdateInput };
