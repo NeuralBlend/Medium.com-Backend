@@ -18,42 +18,42 @@ import { ApiService } from "../api.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
-  authRequired: "true",
-  createdAt: new Date(),
-  description: "exampleDescription",
-  endpoint: "exampleEndpoint",
   id: "exampleId",
-  name: "exampleName",
+  createdAt: new Date(),
   updatedAt: new Date(),
+  authRequired: "true",
+  name: "exampleName",
+  endpoint: "exampleEndpoint",
+  description: "exampleDescription",
 };
 const CREATE_RESULT = {
-  authRequired: "true",
-  createdAt: new Date(),
-  description: "exampleDescription",
-  endpoint: "exampleEndpoint",
   id: "exampleId",
-  name: "exampleName",
+  createdAt: new Date(),
   updatedAt: new Date(),
+  authRequired: "true",
+  name: "exampleName",
+  endpoint: "exampleEndpoint",
+  description: "exampleDescription",
 };
 const FIND_MANY_RESULT = [
   {
-    authRequired: "true",
-    createdAt: new Date(),
-    description: "exampleDescription",
-    endpoint: "exampleEndpoint",
     id: "exampleId",
-    name: "exampleName",
+    createdAt: new Date(),
     updatedAt: new Date(),
+    authRequired: "true",
+    name: "exampleName",
+    endpoint: "exampleEndpoint",
+    description: "exampleDescription",
   },
 ];
 const FIND_ONE_RESULT = {
-  authRequired: "true",
-  createdAt: new Date(),
-  description: "exampleDescription",
-  endpoint: "exampleEndpoint",
   id: "exampleId",
-  name: "exampleName",
+  createdAt: new Date(),
   updatedAt: new Date(),
+  authRequired: "true",
+  name: "exampleName",
+  endpoint: "exampleEndpoint",
+  description: "exampleDescription",
 };
 
 const service = {

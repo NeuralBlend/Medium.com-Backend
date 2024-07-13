@@ -17,7 +17,7 @@ export const ApiEdit = (props: EditProps): React.ReactElement => {
     <Edit {...props}>
       <SimpleForm>
         <BooleanInput label="authRequired" source="authRequired" />
-        <TextInput label="description" multiline source="description" />
+        <TextInput label="name" source="name" />
         <TextInput label="endpoint" source="endpoint" />
         <SelectInput
           source="method"
@@ -27,7 +27,7 @@ export const ApiEdit = (props: EditProps): React.ReactElement => {
           allowEmpty
           optionValue="value"
         />
-        <TextInput label="name" source="name" />
+        <TextInput label="description" multiline source="description" />
         <ReferenceInput source="user.id" reference="User" label="User">
           <SelectInput optionText={UserTitle} />
         </ReferenceInput>

@@ -1,13 +1,13 @@
 import { SortOrder } from "../../util/SortOrder";
 
 export type ApiOrderByInput = {
-  authRequired?: SortOrder;
-  createdAt?: SortOrder;
-  description?: SortOrder;
-  endpoint?: SortOrder;
   id?: SortOrder;
-  method?: SortOrder;
-  name?: SortOrder;
+  createdAt?: SortOrder;
   updatedAt?: SortOrder;
+  authRequired?: SortOrder;
+  name?: SortOrder;
+  endpoint?: SortOrder;
+  method?: SortOrder;
+  description?: SortOrder;
   userId?: SortOrder;
 };

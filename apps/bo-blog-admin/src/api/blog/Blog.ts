@@ -1,5 +1,5 @@
 export type Blog = {
-  createdAt: Date;
   id: string;
+  createdAt: Date;
   updatedAt: Date;
 };

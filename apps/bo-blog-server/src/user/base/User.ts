@@ -11,29 +11,30 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { Api } from "../../api/base/Api";
 import {
-  ValidateNested,
-  IsOptional,
-  IsDate,
   IsString,
+  IsDate,
   MaxLength,
+  IsOptional,
+  ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
+import { Api } from "../../api/base/Api";
+import { Comment } from "../../comment/base/Comment";
+import { Post } from "../../post/base/Post";
 
 @ObjectType()
 class User {
   @ApiProperty({
-    required: false,
-    type: () => [Api],
+    required: true,
+    type: String,
   })
-  @ValidateNested()
-  @Type(() => Api)
-  @IsOptional()
-  apis?: Array<Api>;
+  @IsString()
+  @Field(() => String)
+  id!: string;
 
   @ApiProperty({
     required: true,
@@ -44,15 +45,12 @@ class User {
   createdAt!: Date;
 
   @ApiProperty({
-    required: false,
-    type: String,
+    required: true,
   })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  email!: string | null;
+  @IsDate()
+  @Type(() => Date)
+  @Field(() => Date)
+  updatedAt!: Date;
 
   @ApiProperty({
     required: false,
@@ -65,14 +63,6 @@ class User {
     nullable: true,
   })
   firstName!: string | null;
-
-  @ApiProperty({
-    required: true,
-    type: String,
-  })
-  @IsString()
-  @Field(() => String)
-  id!: string;
 
   @ApiProperty({
     required: false,
@@ -88,26 +78,56 @@ class User {
 
   @ApiProperty({
     required: true,
+    type: String,
+  })
+  @IsString()
+  @Field(() => String)
+  username!: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  email!: string | null;
+
+  @ApiProperty({
+    required: true,
   })
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: JsonValue;
 
   @ApiProperty({
-    required: true,
+    required: false,
+    type: () => [Api],
   })
-  @IsDate()
-  @Type(() => Date)
-  @Field(() => Date)
-  updatedAt!: Date;
+  @ValidateNested()
+  @Type(() => Api)
+  @IsOptional()
+  apis?: Array<Api>;
 
   @ApiProperty({
-    required: true,
-    type: String,
+    required: false,
+    type: () => [Comment],
   })
-  @IsString()
-  @Field(() => String)
-  username!: string;
+  @ValidateNested()
+  @Type(() => Comment)
+  @IsOptional()
+  comments?: Array<Comment>;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Post],
+  })
+  @ValidateNested()
+  @Type(() => Post)
+  @IsOptional()
+  posts?: Array<Post>;
 }
 
 export { User as User };
