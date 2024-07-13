@@ -1,14 +1,18 @@
-import { Api } from "../api/Api";
 import { JsonValue } from "type-fest";
+import { Api } from "../api/Api";
+import { Comment } from "../comment/Comment";
+import { Post } from "../post/Post";
 
 export type User = {
-  apis?: Array<Api>;
-  createdAt: Date;
-  email: string | null;
-  firstName: string | null;
   id: string;
-  lastName: string | null;
-  roles: JsonValue;
+  createdAt: Date;
   updatedAt: Date;
+  firstName: string | null;
+  lastName: string | null;
   username: string;
+  email: string | null;
+  roles: JsonValue;
+  apis?: Array<Api>;
+  comments?: Array<Comment>;
+  posts?: Array<Post>;
 };

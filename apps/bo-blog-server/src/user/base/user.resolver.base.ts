@@ -22,6 +22,10 @@ import { UpdateUserArgs } from "./UpdateUserArgs";
 import { DeleteUserArgs } from "./DeleteUserArgs";
 import { ApiFindManyArgs } from "../../api/base/ApiFindManyArgs";
 import { Api } from "../../api/base/Api";
+import { CommentFindManyArgs } from "../../comment/base/CommentFindManyArgs";
+import { Comment } from "../../comment/base/Comment";
+import { PostFindManyArgs } from "../../post/base/PostFindManyArgs";
+import { Post } from "../../post/base/Post";
 import { UserService } from "../user.service";
 @graphql.Resolver(() => User)
 export class UserResolverBase {
@@ -95,6 +99,34 @@ export class UserResolverBase {
     @graphql.Args() args: ApiFindManyArgs
   ): Promise<Api[]> {
     const results = await this.service.findApis(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @graphql.ResolveField(() => [Comment], { name: "comments" })
+  async findComments(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: CommentFindManyArgs
+  ): Promise<Comment[]> {
+    const results = await this.service.findComments(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @graphql.ResolveField(() => [Post], { name: "posts" })
+  async findPosts(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: PostFindManyArgs
+  ): Promise<Post[]> {
+    const results = await this.service.findPosts(parent.id, args);
 
     if (!results) {
       return [];

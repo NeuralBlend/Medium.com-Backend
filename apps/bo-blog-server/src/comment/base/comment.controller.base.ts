@@ -32,11 +32,38 @@ export class CommentControllerBase {
     @common.Body() data: CommentCreateInput
   ): Promise<Comment> {
     return await this.service.createComment({
-      data: data,
+      data: {
+        ...data,
+
+        user: data.user
+          ? {
+              connect: data.user,
+            }
+          : undefined,
+
+        post: data.post
+          ? {
+              connect: data.post,
+            }
+          : undefined,
+      },
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
+        content: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        post: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -49,9 +76,22 @@ export class CommentControllerBase {
     return this.service.comments({
       ...args,
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
+        content: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        post: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -65,9 +105,22 @@ export class CommentControllerBase {
     const result = await this.service.comment({
       where: params,
       select: {
-        createdAt: true,
         id: true,
+        createdAt: true,
         updatedAt: true,
+        content: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        post: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -88,11 +141,38 @@ export class CommentControllerBase {
     try {
       return await this.service.updateComment({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          user: data.user
+            ? {
+                connect: data.user,
+              }
+            : undefined,
+
+          post: data.post
+            ? {
+                connect: data.post,
+              }
+            : undefined,
+        },
         select: {
-          createdAt: true,
           id: true,
+          createdAt: true,
           updatedAt: true,
+          content: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
+
+          post: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -115,9 +195,22 @@ export class CommentControllerBase {
       return await this.service.deleteComment({
         where: params,
         select: {
-          createdAt: true,
           id: true,
+          createdAt: true,
           updatedAt: true,
+          content: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
+
+          post: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {

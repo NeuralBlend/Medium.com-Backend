@@ -9,5 +9,55 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class CommentCreateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import {
+  IsString,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
+import { Type } from "class-transformer";
+import { PostWhereUniqueInput } from "../../post/base/PostWhereUniqueInput";
+
+@InputType()
+class CommentCreateInput {
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  content?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  @Field(() => UserWhereUniqueInput, {
+    nullable: true,
+  })
+  user?: UserWhereUniqueInput | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => PostWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => PostWhereUniqueInput)
+  @IsOptional()
+  @Field(() => PostWhereUniqueInput, {
+    nullable: true,
+  })
+  post?: PostWhereUniqueInput | null;
+}
+
 export { CommentCreateInput as CommentCreateInput };

@@ -4,9 +4,9 @@ import {
   List,
   Datagrid,
   ListProps,
-  BooleanField,
-  DateField,
   TextField,
+  DateField,
+  BooleanField,
   ReferenceField,
 } from "react-admin";
 
@@ -23,14 +23,14 @@ export const ApiList = (props: ListProps): React.ReactElement => {
       pagination={<Pagination />}
     >
       <Datagrid rowClick="show">
-        <BooleanField label="authRequired" source="authRequired" />
-        <DateField source="createdAt" label="Created At" />
-        <TextField label="description" source="description" />
-        <TextField label="endpoint" source="endpoint" />
         <TextField label="ID" source="id" />
-        <TextField label="method" source="method" />
-        <TextField label="name" source="name" />
+        <DateField source="createdAt" label="Created At" />
         <DateField source="updatedAt" label="Updated At" />
+        <BooleanField label="authRequired" source="authRequired" />
+        <TextField label="name" source="name" />
+        <TextField label="endpoint" source="endpoint" />
+        <TextField label="method" source="method" />
+        <TextField label="description" source="description" />
         <ReferenceField label="User" source="user.id" reference="User">
           <TextField source={USER_TITLE_FIELD} />
         </ReferenceField>

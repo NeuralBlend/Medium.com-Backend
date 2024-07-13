@@ -2,9 +2,9 @@ import { UserWhereUniqueInput } from "../user/UserWhereUniqueInput";
 
 export type ApiUpdateInput = {
   authRequired?: boolean | null;
-  description?: string | null;
+  name?: string | null;
   endpoint?: string | null;
   method?: "Option1" | null;
-  name?: string | null;
+  description?: string | null;
   user?: UserWhereUniqueInput | null;
 };

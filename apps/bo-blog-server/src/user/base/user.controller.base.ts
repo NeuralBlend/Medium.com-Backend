@@ -26,6 +26,11 @@ import { UserUpdateInput } from "./UserUpdateInput";
 import { ApiFindManyArgs } from "../../api/base/ApiFindManyArgs";
 import { Api } from "../../api/base/Api";
 import { ApiWhereUniqueInput } from "../../api/base/ApiWhereUniqueInput";
+import { CommentFindManyArgs } from "../../comment/base/CommentFindManyArgs";
+import { Comment } from "../../comment/base/Comment";
+import { CommentWhereUniqueInput } from "../../comment/base/CommentWhereUniqueInput";
+import { PostFindManyArgs } from "../../post/base/PostFindManyArgs";
+import { PostWhereUniqueInput } from "../../post/base/PostWhereUniqueInput";
 
 export class UserControllerBase {
   constructor(protected readonly service: UserService) {}
@@ -35,14 +40,14 @@ export class UserControllerBase {
     return await this.service.createUser({
       data: data,
       select: {
-        createdAt: true,
-        email: true,
-        firstName: true,
         id: true,
-        lastName: true,
-        roles: true,
+        createdAt: true,
         updatedAt: true,
+        firstName: true,
+        lastName: true,
         username: true,
+        email: true,
+        roles: true,
       },
     });
   }
@@ -55,14 +60,14 @@ export class UserControllerBase {
     return this.service.users({
       ...args,
       select: {
-        createdAt: true,
-        email: true,
-        firstName: true,
         id: true,
-        lastName: true,
-        roles: true,
+        createdAt: true,
         updatedAt: true,
+        firstName: true,
+        lastName: true,
         username: true,
+        email: true,
+        roles: true,
       },
     });
   }
@@ -76,14 +81,14 @@ export class UserControllerBase {
     const result = await this.service.user({
       where: params,
       select: {
-        createdAt: true,
-        email: true,
-        firstName: true,
         id: true,
-        lastName: true,
-        roles: true,
+        createdAt: true,
         updatedAt: true,
+        firstName: true,
+        lastName: true,
         username: true,
+        email: true,
+        roles: true,
       },
     });
     if (result === null) {
@@ -106,14 +111,14 @@ export class UserControllerBase {
         where: params,
         data: data,
         select: {
-          createdAt: true,
-          email: true,
-          firstName: true,
           id: true,
-          lastName: true,
-          roles: true,
+          createdAt: true,
           updatedAt: true,
+          firstName: true,
+          lastName: true,
           username: true,
+          email: true,
+          roles: true,
         },
       });
     } catch (error) {
@@ -136,14 +141,14 @@ export class UserControllerBase {
       return await this.service.deleteUser({
         where: params,
         select: {
-          createdAt: true,
-          email: true,
-          firstName: true,
           id: true,
-          lastName: true,
-          roles: true,
+          createdAt: true,
           updatedAt: true,
+          firstName: true,
+          lastName: true,
           username: true,
+          email: true,
+          roles: true,
         },
       });
     } catch (error) {
@@ -166,14 +171,14 @@ export class UserControllerBase {
     const results = await this.service.findApis(params.id, {
       ...query,
       select: {
-        authRequired: true,
-        createdAt: true,
-        description: true,
-        endpoint: true,
         id: true,
-        method: true,
-        name: true,
+        createdAt: true,
         updatedAt: true,
+        authRequired: true,
+        name: true,
+        endpoint: true,
+        method: true,
+        description: true,
 
         user: {
           select: {
@@ -231,6 +236,182 @@ export class UserControllerBase {
   ): Promise<void> {
     const data = {
       apis: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Get("/:id/comments")
+  @ApiNestedQuery(CommentFindManyArgs)
+  async findComments(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Comment[]> {
+    const query = plainToClass(CommentFindManyArgs, request.query);
+    const results = await this.service.findComments(params.id, {
+      ...query,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        content: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        post: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/comments")
+  async connectComments(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: CommentWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      comments: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/comments")
+  async updateComments(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: CommentWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      comments: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/comments")
+  async disconnectComments(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: CommentWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      comments: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Get("/:id/posts")
+  @ApiNestedQuery(PostFindManyArgs)
+  async findPosts(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Post[]> {
+    const query = plainToClass(PostFindManyArgs, request.query);
+    const results = await this.service.findPosts(params.id, {
+      ...query,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        title: true,
+        content: true,
+        publishedDate: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+
+        category: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/posts")
+  async connectPosts(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PostWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      posts: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/posts")
+  async updatePosts(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PostWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      posts: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/posts")
+  async disconnectPosts(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: PostWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      posts: {
         disconnect: body,
       },
     };
